@@ -1,13 +1,15 @@
-'use client'
-
 import { calculateWinner } from '@/utils'
-import { useState } from 'react'
 import Square from './Square'
 
-const Board = () => {
-  const [xIsNext, setXIsNext] = useState(true)
-  const [squares, setSquares] = useState(Array(9).fill(null))
-
+const Board = ({
+  xIsNext,
+  squares,
+  onPlay
+}: {
+  xIsNext: boolean
+  squares: string[]
+  onPlay: (squares: string[]) => void
+}) => {
   let status: string
 
   const winner = calculateWinner(squares)
@@ -27,12 +29,11 @@ const Board = () => {
       newSquares[i] = 'O'
     }
 
-    setSquares(newSquares)
-    setXIsNext(!xIsNext)
+    onPlay(newSquares)
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <div className="p-2 text-xl">{status}</div>
       <div className="grid grid-cols-3 w-48 h-48">
         {Array.from({ length: 9 }).map((_, i) => {
@@ -54,7 +55,7 @@ const Board = () => {
           )
         })}
       </div>
-    </>
+    </div>
   )
 }
 
